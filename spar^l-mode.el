@@ -1,4 +1,4 @@
-;;; spar^l-mode.el --- display ^L better  -*- lexical-binding: t -*-
+;;; spar^l-mode.el --- ．☆ · ゜✧ ｡ ．· ° · ✧ ︵‿✧   -*- lexical-binding: t -*-
 ;;
 ;; Author: Joe Wreschnig
 ;; Package-Version: 20170610
@@ -26,9 +26,9 @@
 ;;
 ;; Confused by all the ^Ls you see in official Emacs code?
 ;; Disappointed that you installed a package named "pretty" that
-;; isn't?  Then Spar^L Mode is for you!
+;; isn't?  Then Spar^L mode is for you!
 ;;
-;; Spar^L Mode replaces the form feed (Control-L, or ^L) character in
+;; Spar^L mode replaces the form feed (Control-L, or ^L) character in
 ;; Emacs buffers with something much cuter.
 ;;
 ;; To use it, add the following to your Emacs initialization:
@@ -40,14 +40,14 @@
 (defconst spar^l-mode-tail '("︵‿✧" "︵‿☆")
   "Strings to pick from to conclude sparkling.")
 
-(defconst spar^l-mode-tail-tty '("  ~  *")
-  "Strings to pick from to conclude sparkling, on TTYs.")
+(defconst spar^l-mode-tail-compat '("  ~  *")
+  "Strings to pick from to conclude sparkling with wide compatibility.")
 
 (defconst spar^l-mode-body '("．☆ · ゜✧ ｡ " "．· ° · ✧ ")
   "Strings to pick from while sparkling.")
 
-(defconst spar^l-mode-body-tty '(". · ° * " ". * ° · ")
-  "Strings to pick from while sparkling, on TTYs.")
+(defconst spar^l-mode-body-compat '(". · ° * " ". * ° · ")
+  "Strings to pick from while sparkling with wide compatibility.")
 
 (defface spar^l-mode '((t :inherit (escape-glyph)))
   "The face to use for the sparkles."
@@ -58,10 +58,14 @@
   :prefix "spar^L-" :group 'convenience)
 
 (defcustom spar^l-mode-compatibility-mode nil
-  "Restrict sparkles to common glyphs for compatibility.")
+  "Restrict sparkles to common glyphs for compatibility.
 
-(defun spar^l-mode--tty-p ()
-  "Return t if glyphs should be restricted to a TTY-friendly set."
+This is always enabled in console modes.  Setting this also
+enables it for graphical displays, which may be needed if your
+monospace fonts don't have the required glyphs.")
+
+(defun spar^l-mode--compat-p ()
+  "Return t if glyphs should be restricted to a widely-compatible set."
   (or spar^l-mode-compatibility-mode
       (not (display-graphic-p))))
 
@@ -83,9 +87,9 @@ The string will be no longer than WIDTH columns."
   "Create a random sparkle text no longer than WIDTH columns."
   (interactive)
   (random (number-to-string width))
-  (let* ((tail (if (spar^l-mode--tty-p) spar^l-mode-tail-tty
+  (let* ((tail (if (spar^l-mode--compat-p) spar^l-mode-tail-compat
                   spar^l-mode-tail))
-         (body (if (spar^l-mode--tty-p) spar^l-mode-body-tty
+         (body (if (spar^l-mode--compat-p) spar^l-mode-body-compat
                  spar^l-mode-body)))
     (mapcar (lambda (c) (make-glyph-code c 'spar^l-mode))
             (concat "\n"
@@ -94,7 +98,7 @@ The string will be no longer than WIDTH columns."
 
 ;;;###autoload
 (define-minor-mode spar^l-mode
-  "Display of Control-l (`^L') characters as sparkles."
+  "Display Control-l (`^L') characters as sparkles."
   nil nil nil
   :global t :group 'Spar^L
   :lighter " ･｡ﾟ✧"
@@ -112,7 +116,7 @@ The string will be no longer than WIDTH columns."
                             (window-body-width window)))))))))
    
 (defun spar^l-mode-refresh ()
-  "Re-enable spar^L mode if it's on."
+  "Re-enable Spar^L mode if it's on."
   (when spar^l-mode
     (spar^l-mode t)))
 
