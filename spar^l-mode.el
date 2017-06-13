@@ -69,28 +69,28 @@
   "Pick a random item from SEQ."
   (nth (random (length seq)) seq))
 
-(defun spar^l-mode--random-string (seq width)
-  "Build a random string from elements of SEQ, up to WIDTH columns."
+(defun spar^l-mode--random-string (body tail width)
+  "Build a random string from elements of BODY, ending with TAIL.
+
+The string will be no longer than WIDTH columns."
   (let ((s ""))
-    (while (< (length s) width)
-      (setq s (concat s (spar^l-mode--choose seq))))
-    (truncate-string-to-width s width)))
+    (while (<= (length s) width)
+      (setq s (concat s (spar^l-mode--choose body))))
+    (truncate-string-to-width
+     s width nil nil (spar^l-mode--choose tail))))
 
 (defun spar^l-mode--string (width)
   "Create a random sparkle text no longer than WIDTH columns."
   (interactive)
   (random (number-to-string width))
-  (let* ((tail (spar^l-mode--choose
-                (if (spar^l-mode--tty-p) spar^l-mode-tail-tty
-                  spar^l-mode-tail)))
-         (body (spar^l-mode--random-string
-                (if (spar^l-mode--tty-p) spar^l-mode-body-tty
-                  spar^l-mode-body)
-                (- width (string-width tail)
-                   (if (spar^l-mode--tty-p) 1 0))))
-         (final (truncate-string-to-width (concat body tail) width)))
+  (let* ((tail (if (spar^l-mode--tty-p) spar^l-mode-tail-tty
+                  spar^l-mode-tail))
+         (body (if (spar^l-mode--tty-p) spar^l-mode-body-tty
+                 spar^l-mode-body)))
     (mapcar (lambda (c) (make-glyph-code c 'spar^l-mode))
-            (concat "\n" final "\n"))))
+            (concat "\n"
+                    (spar^l-mode--random-string body tail (1- width))
+                    "\n"))))
 
 ;;;###autoload
 (define-minor-mode spar^l-mode
