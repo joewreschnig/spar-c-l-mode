@@ -43,7 +43,7 @@
 (defconst spar^l-mode-tail-compat '("  ~  *")
   "Strings to pick from to conclude sparkling with wide compatibility.")
 
-(defconst spar^l-mode-body '("．☆ · ゜✧ ｡ " "．· ° · ✧ ")
+(defconst spar^l-mode-body '(". ☆ · ﾟ ✧ ｡ " "⸼ ⸰ ° · ✧ ")
   "Strings to pick from while sparkling.")
 
 (defconst spar^l-mode-body-compat '(". · ° * " ". * ° · ")
