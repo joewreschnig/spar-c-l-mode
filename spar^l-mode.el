@@ -99,9 +99,7 @@ The string will be no longer than WIDTH columns."
 ;;;###autoload
 (define-minor-mode spar^l-mode
   "Display Control-l (`^L') characters as sparkles."
-  nil nil nil
   :global t :group 'Spar^L
-  :lighter " ･｡ﾟ✧"
   (if spar^l-mode
       (add-hook 'window-configuration-change-hook #'spar^l-mode-refresh)
     (remove-hook 'window-configuration-change-hook #'spar^l-mode-refresh))
