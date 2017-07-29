@@ -101,20 +101,20 @@ The string will be no longer than WIDTH columns."
   "Display Control-l (`^L') characters as sparkles."
   :global t :group 'Spar^L
   (if spar^l-mode
-      (add-hook 'window-configuration-change-hook #'spar^l-mode-refresh)
-    (remove-hook 'window-configuration-change-hook #'spar^l-mode-refresh))
+      (add-hook 'window-size-change-functions #'spar^l-mode-refresh)
+    (remove-hook 'window-size-change-functions #'spar^l-mode-refresh))
   (walk-windows
    (lambda (window)
      (let ((display-table (or (window-display-table window)
                               (set-window-display-table
                                window (make-display-table)))))
-       (aset display-table ?\014
+       (aset display-table ?\C-l
              (and spar^l-mode
                   (vconcat (spar^l-mode--string
                             (window-body-width window)))))))
    'skip-minibuffer 'visible))
    
-(defun spar^l-mode-refresh ()
+(defun spar^l-mode-refresh (&optional _)
   "Re-enable Spar^L mode if it's on."
   (when spar^l-mode
     (spar^l-mode t)))
