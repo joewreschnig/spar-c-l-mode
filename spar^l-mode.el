@@ -1,4 +1,4 @@
-;;; spar^l-mode.el --- ．☆ · ゜✧ ｡ ．· ° · ✧ ︵‿✧   -*- lexical-binding: t -*-
+;;; spar^l-mode.el --- . ☆ · ﾟ ✧ ｡ ⸼ ⸰ ° · ✧ ︵‿✧   -*- lexical-binding: t -*-
 ;;
 ;; Author: Joe Wreschnig
 ;; Package-Version: 20170610
