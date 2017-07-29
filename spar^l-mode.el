@@ -111,7 +111,8 @@ The string will be no longer than WIDTH columns."
        (aset display-table ?\014
              (and spar^l-mode
                   (vconcat (spar^l-mode--string
-                            (window-body-width window)))))))))
+                            (window-body-width window)))))))
+   'skip-minibuffer 'visible))
    
 (defun spar^l-mode-refresh ()
   "Re-enable Spar^L mode if it's on."
