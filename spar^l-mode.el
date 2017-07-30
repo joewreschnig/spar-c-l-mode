@@ -80,10 +80,9 @@ default fonts don't have the required glyphs.")
                  spar^l-mode-body))
          (bodies (string-join
                   (make-list (1+ (/ width (length body))) body) " ")))
-    (mapcar (lambda (c) (make-glyph-code c 'spar^l-mode))
-            (concat "\n"
-                    (truncate-string-to-width bodies width nil nil tail)
-                    "\n"))))
+    (concat "\n"
+            (truncate-string-to-width bodies width nil nil tail)
+            "\n")))
 
 ;;;###autoload
 (define-minor-mode spar^l-mode
@@ -93,9 +92,9 @@ default fonts don't have the required glyphs.")
       (add-hook 'window-size-change-functions #'spar^l-mode-refresh)
     (remove-hook 'window-size-change-functions #'spar^l-mode-refresh))
   (spar^l-mode-refresh))
-   
+
 (defun spar^l-mode-refresh (&optional _)
-  "Re-enable Spar^L mode if it's on."
+  "Refresh sparkles in active windows."
   (walk-windows
    (lambda (window)
      (let ((display-table (window-display-table window)))
@@ -104,10 +103,10 @@ default fonts don't have the required glyphs.")
            (setq display-table (make-display-table)))
          (aset display-table ?\C-l
                (and spar^l-mode
-                    (vconcat (spar^l-mode--string
-                              (window-body-width window)))))
+                    (vconcat
+                     (mapcar (lambda (c) (make-glyph-code c 'spar^l-mode))
+                             (spar^l-mode--string (window-body-width window))))))
          (set-window-display-table window display-table))))
-
    'skip-minibuffer 'visible))
 
 (provide 'spar^l-mode)
