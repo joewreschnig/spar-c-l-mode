@@ -37,20 +37,22 @@
 
 ;;; Code:
 
-(defconst spar^l-mode-tail '("︵‿✧" "︵‿☆")
-  "Strings to pick from to conclude sparkling.")
+(require 'subr-x)
 
-(defconst spar^l-mode-tail-compat '("  ~  *")
-  "Strings to pick from to conclude sparkling with wide compatibility.")
+(defconst spar^l-mode-tail " ︵‿★"
+  "String to conclude sparkling.")
 
-(defconst spar^l-mode-body '(". ☆ · ﾟ ✧ ｡ " "⸼ ⸰ ° · ✧ ")
-  "Strings to pick from while sparkling.")
+(defconst spar^l-mode-tail-compat "  ~ *"
+  "Strings to conclude sparkling with restricted glyphs.")
 
-(defconst spar^l-mode-body-compat '(". · ° * " ". * ° · ")
-  "Strings to pick from while sparkling with wide compatibility.")
+(defconst spar^l-mode-body ". ☆ · ﾟ ✧ ｡ ⸼ ⸰ ° · ✧"
+  "String to use for sparkling.")
+
+(defconst spar^l-mode-body-compat ". · ° * . ° * ·"
+  "Strings to use for sparkling with restricted glyphs.")
 
 (defface spar^l-mode '((t :inherit (escape-glyph)))
-  "The face to use for the sparkles."
+  "The face to use for sparkling."
   :group 'Spar^L)
 
 (defgroup Spar^L nil
@@ -60,40 +62,27 @@
 (defcustom spar^l-mode-compatibility-mode nil
   "Restrict sparkles to common glyphs for compatibility.
 
-This is always enabled in console modes.  Setting this also
+This is always enabled in text-only terminals.  Setting this also
 enables it for graphical displays, which may be needed if your
-monospace fonts don't have the required glyphs.")
+default fonts don't have the required glyphs.")
 
-(defun spar^l-mode--compat-p ()
-  "Return t if glyphs should be restricted to a widely-compatible set."
+(defun spar^l-mode--compat-p (&optional display)
+  "Return non-nil if DISPLAY should use a restricted glyph set."
   (or spar^l-mode-compatibility-mode
-      (not (display-graphic-p))))
-
-(defun spar^l-mode--choose (seq)
-  "Pick a random item from SEQ."
-  (nth (random (length seq)) seq))
-
-(defun spar^l-mode--random-string (body tail width)
-  "Build a random string from elements of BODY, ending with TAIL.
-
-The string will be no longer than WIDTH columns."
-  (let ((s ""))
-    (while (<= (length s) width)
-      (setq s (concat s (spar^l-mode--choose body))))
-    (truncate-string-to-width
-     s width nil nil (spar^l-mode--choose tail))))
+      (not (display-graphic-p display))))
 
 (defun spar^l-mode--string (width)
-  "Create a random sparkle text no longer than WIDTH columns."
+  "Create a sparkle no longer than WIDTH columns."
   (interactive)
-  (random (number-to-string width))
   (let* ((tail (if (spar^l-mode--compat-p) spar^l-mode-tail-compat
                   spar^l-mode-tail))
          (body (if (spar^l-mode--compat-p) spar^l-mode-body-compat
-                 spar^l-mode-body)))
+                 spar^l-mode-body))
+         (bodies (string-join
+                  (make-list (1+ (/ width (length body))) body) " ")))
     (mapcar (lambda (c) (make-glyph-code c 'spar^l-mode))
             (concat "\n"
-                    (spar^l-mode--random-string body tail (1- width))
+                    (truncate-string-to-width bodies width nil nil tail)
                     "\n"))))
 
 ;;;###autoload
@@ -103,21 +92,23 @@ The string will be no longer than WIDTH columns."
   (if spar^l-mode
       (add-hook 'window-size-change-functions #'spar^l-mode-refresh)
     (remove-hook 'window-size-change-functions #'spar^l-mode-refresh))
-  (walk-windows
-   (lambda (window)
-     (let ((display-table (or (window-display-table window)
-                              (set-window-display-table
-                               window (make-display-table)))))
-       (aset display-table ?\C-l
-             (and spar^l-mode
-                  (vconcat (spar^l-mode--string
-                            (window-body-width window)))))))
-   'skip-minibuffer 'visible))
+  (spar^l-mode-refresh))
    
 (defun spar^l-mode-refresh (&optional _)
   "Re-enable Spar^L mode if it's on."
-  (when spar^l-mode
-    (spar^l-mode t)))
+  (walk-windows
+   (lambda (window)
+     (let ((display-table (window-display-table window)))
+       (when (or display-table spar^l-mode)
+         (unless display-table
+           (setq display-table (make-display-table)))
+         (aset display-table ?\C-l
+               (and spar^l-mode
+                    (vconcat (spar^l-mode--string
+                              (window-body-width window)))))
+         (set-window-display-table window display-table))))
+
+   'skip-minibuffer 'visible))
 
 (provide 'spar^l-mode)
 
