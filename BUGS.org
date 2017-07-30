@@ -1,0 +1,11 @@
+* TODO Scrolling small amounts gets “stuck” on ^Ls.
+  Scrolling with the mouse wheel with only three lines per event gets
+  stuck, especially near the bottom of the file. This seems to be
+  because the scrolling jumps up three visual lines, but only one
+  logical line, then back down one logical line during recentering
+  during redisplay.
+
+  This may drive me to use overlays rather than display tables, in
+  which case the extra space would be handled via a ~line-height~
+  property rather than newlines, since text replacement overlays get
+  all wonky in a different way when spanning multiple lines.
