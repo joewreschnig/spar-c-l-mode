@@ -36,10 +36,10 @@ to cover:
 
 ``` emacs-lisp
 ;; Instead of this:
-(set-fontset-font t ’unicode "Symbola 14" nil ’prepend)
+(set-fontset-font t ’unicode "Symbola" nil ’prepend)
 
 ;; Try this:
-(set-fontset-font t 'symbol "Symbola 14" nil ’prepend)
+(set-fontset-font t 'symbol "Symbola" nil ’prepend)
 ```
 
 The default sparkles are restricted to characters from the `latin` and
