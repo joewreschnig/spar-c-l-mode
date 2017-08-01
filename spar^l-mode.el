@@ -53,7 +53,7 @@
   :type 'string)
 
 (defcustom spar^l-mode-body "⸰ . ☆ · ﹡ ⸼ ✧ ⁕ ° "
-  "String to use for sparkling."
+  "String to repeat for sparkling."
   :type 'string)
 
 (defcustom spar^l-mode-compatibility-mode nil
@@ -132,14 +132,18 @@ You can customize this minor mode, see option `spar^l-mode'."
 
 (defun spar^l-mode-refresh (&optional frame)
   "Refresh the sparkles in FRAME.
+If FRAME is nil, all frames are refreshed.
 
 Calling this manually (or toggling the mode) may be necessary
-to correctly draw sparkles after changing font sizes."
+to correctly draw sparkles after customizing faces."
   (interactive)
   (walk-windows
    (lambda (window)
      (let ((display-table (window-display-table window)))
+       ;; Don't make a display table unless we need to fill it in; but
+       ;; if one exists we need to either set it or unset it.
        (when (and (or display-table spar^l-mode)
+                  ;; 'skip-minibuffer seems to be a suggestion...
                   (not (window-minibuffer-p window)))
          (unless display-table
            (setq display-table (make-display-table)))
