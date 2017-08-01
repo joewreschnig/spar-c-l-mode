@@ -12,8 +12,10 @@ Emacs buffers with something much cuter.
 To use it, add the following to your Emacs initialization after
 installing the package:
 
-    (require ’spar^l-mode)
-    (spar^l-mode)
+``` emacs-lisp
+(require ’spar^l-mode)
+(spar^l-mode)
+```
 
 ## Troubleshooting
 
@@ -32,11 +34,13 @@ is registered for the whole `unicode` script but it doesn’t have the
 right glyph. Instead, only use Symbola for the scripts you want it
 to cover:
 
-    ;; Instead of this:
-    (set-fontset-font t ’unicode "Symbola 14" nil ’prepend)
+``` emacs-lisp
+;; Instead of this:
+(set-fontset-font t ’unicode "Symbola 14" nil ’prepend)
 
-    ;; Try this:
-    (set-fontset-font t 'symbol "Symbola 14" nil ’prepend)
+;; Try this:
+(set-fontset-font t 'symbol "Symbola 14" nil ’prepend)
+```
 
 The default sparkles are restricted to characters from the `latin` and
 `symbol` scripts.
