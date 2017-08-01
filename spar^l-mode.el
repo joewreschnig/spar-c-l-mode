@@ -67,10 +67,9 @@ This is always enabled in text-only terminals.  Setting this also
 enables it for graphical displays, which may be needed if your
 default fonts don't have the required glyphs.")
 
-(defun spar^l-mode--compat-p (&optional display)
-  "Return non-nil if DISPLAY should use a restricted glyph set."
-  (or spar^l-mode-compatibility-mode
-      (not (display-graphic-p display))))
+(defun spar^l-mode--compat-p ()
+  "Return non-nil if the selected frame should restrict sparkle glyphs."
+  (or spar^l-mode-compatibility-mode (not (display-graphic-p))))
 
 (defvar spar^l-mode--inhibit-refresh nil
   "Inhibit sparkling refresh if set.
@@ -78,38 +77,37 @@ default fonts don't have the required glyphs.")
 This is used to prevent infinite loops when creating a new window to test
 the width of a string for a window.")
 
-(defun spar^l-mode--pixel-width (string frame)
-  "Calculate the width of a STRING in a given FRAME."
-  (with-selected-frame frame
-    (with-temp-buffer
-      (insert (propertize string 'face 'spar^l-mode))
-      (save-window-excursion
-        (set-window-dedicated-p nil nil)
-        (set-window-buffer nil (current-buffer))
-        (car (window-text-pixel-size))))))
+(defun spar^l-mode--pixel-width (string)
+  "Calculate the width of a STRING in the selected frame and window."
+  (with-temp-buffer
+    (insert (propertize string 'face 'spar^l-mode))
+    (save-window-excursion
+      (set-window-dedicated-p nil nil)
+      (set-window-buffer nil (current-buffer))
+      (car (window-text-pixel-size)))))
 
 (defun spar^l-mode--string-for-window (window)
   "Create a sparkle to fit within WINDOW."
   (interactive)
-  (if (spar^l-mode--compat-p)
-      (let ((width (window-body-width window)) (s))
-        (while (< (string-width s) width)
-          (setq s (concat s spar^l-mode-body-compat)))
-        (truncate-string-to-width s width nil nil spar^l-mode-tail-compat))
+  (with-selected-frame (window-frame window)
+    (if (spar^l-mode--compat-p)
+        (let ((width (window-body-width window)) (s))
+          (while (< (string-width s) width)
+            (setq s (concat s spar^l-mode-body-compat)))
+          (truncate-string-to-width s width nil nil spar^l-mode-tail-compat))
 
-    (let* ((spar^l-mode--inhibit-refresh t)
-           (frame (window-frame window))
-           (body-width (spar^l-mode--pixel-width spar^l-mode-body frame))
-           (tail-width (spar^l-mode--pixel-width spar^l-mode-tail frame))
-           (avail-width (- (window-body-width window t) tail-width))
-           (s ""))
-      (dotimes (_ (ceiling (/ (float avail-width) body-width)))
-        (setq s (concat s spar^l-mode-body)))
-      (while (>= (spar^l-mode--pixel-width s frame) avail-width)
-        ;; This could be searched more efficiently, but I'm not sure
-        ;; `s' is ever over-long enough to justify the overhead.
-        (setq s (substring s 0 -1)))
-      (concat s spar^l-mode-tail))))
+      (let* ((spar^l-mode--inhibit-refresh t)
+             (body-width (spar^l-mode--pixel-width spar^l-mode-body))
+             (tail-width (spar^l-mode--pixel-width spar^l-mode-tail))
+             (avail-width (- (window-body-width window t) tail-width))
+             (s ""))
+        (dotimes (_ (ceiling (/ (float avail-width) body-width)))
+          (setq s (concat s spar^l-mode-body)))
+        (while (>= (spar^l-mode--pixel-width s) avail-width)
+          ;; This could be searched more efficiently, but I'm not sure
+          ;; `s' is ever over-long enough to justify the overhead.
+          (setq s (substring s 0 -1)))
+        (concat s spar^l-mode-tail)))))
 
 ;;;###autoload
 (define-minor-mode spar^l-mode
@@ -141,12 +139,12 @@ to correctly draw sparkles after changing font sizes."
          (unless display-table
            (setq display-table (make-display-table)))
          (aset display-table ?\C-l
-               (and spar^l-mode
-                    (vconcat
-                     (mapcar (lambda (c) (make-glyph-code c 'spar^l-mode))
-                             (format
-                              "\n%s\n"
-                              (spar^l-mode--string-for-window window))))))
+               (when spar^l-mode
+                 (vconcat
+                  (mapcar (lambda (c) (make-glyph-code c 'spar^l-mode))
+                          (format
+                           "\n%s\n"
+                           (spar^l-mode--string-for-window window))))))
          (set-window-display-table window display-table))))
      'skip-minibuffer (or frame 0)))
 
