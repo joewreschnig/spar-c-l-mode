@@ -6,10 +6,11 @@
    logical line, then back down one logical line during recentering
    during redisplay.
 
-   This may drive me to use overlays rather than display tables, in
-   which case the extra space would be handled via a ~line-height~
-   property rather than newlines, since text replacement overlays get
-   all wonky in a different way when spanning multiple lines.
+   Overlays and text ~’display~ properties don’t have this problem,
+   but they can’t be set per-window.
+
+   It may be necessary to mix the two, with a property to wrap the
+   page feed in newlines and a display table entry to render it.
 
 
 * Resolved Issues
