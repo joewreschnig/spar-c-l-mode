@@ -12,8 +12,8 @@ Emacs buffers with something much cuter.
 To use it, add the following to your Emacs initialization after
 installing the package:
 
-    (require spar^l-mode)
-    (spar^l-mode t)
+    (require ’spar^l-mode)
+    (spar^l-mode)
 
 ## License
 
