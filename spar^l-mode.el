@@ -1,7 +1,7 @@
 ;;; spar^l-mode.el --- . ☆ · ﹡ ⸼ ✧ ⁀‿⁐⁓✨ -*- lexical-binding: t -*-
 ;;
 ;; Author: Joe Wreschnig
-;; Package-Version: 20170610
+;; Package-Version: 20170801
 ;; Package-Requires: ((emacs "24.4"))
 ;; Keywords: display, faces
 
