@@ -39,16 +39,16 @@
 
 (require 'subr-x)
 
-(defconst spar^l-mode-tail " ︵‿★"
+(defconst spar^l-mode-tail "⁀‿⁐⁓✨"
   "String to conclude sparkling.")
 
 (defconst spar^l-mode-tail-compat "  ~ *"
   "Strings to conclude sparkling with restricted glyphs.")
 
-(defconst spar^l-mode-body ". ☆ · ﾟ ✧ ｡ ⸼ ⸰ ° · ✧"
+(defconst spar^l-mode-body "⸰ . ☆ · ﹡ ⸼ ✶ ⁕ ° "
   "String to use for sparkling.")
 
-(defconst spar^l-mode-body-compat ". · ° * . ° * ·"
+(defconst spar^l-mode-body-compat ". · ° * . ° * · "
   "Strings to use for sparkling with restricted glyphs.")
 
 (defface spar^l-mode '((t :inherit (escape-glyph)))
