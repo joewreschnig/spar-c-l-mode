@@ -94,7 +94,6 @@ the width of a string for a window.")
 
 (defun spar^l-mode--string-for-window (window)
   "Create a sparkle to fit within WINDOW."
-  (interactive)
   (with-selected-frame (window-frame window)
     (if (spar^l-mode--compat-p)
         (let ((width (window-body-width window)) (s ""))
