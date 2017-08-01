@@ -113,7 +113,7 @@ the width of a string for a window.")
 
 ;;;###autoload
 (define-minor-mode spar^l-mode
-  "Display Control-l (`^L') characters as sparkles."
+  "Display Control-L (`^L') characters as sparkles."
   :global t :group 'Spar^L
   (if spar^l-mode
       (add-hook 'window-size-change-functions #'spar^l-mode-refresh)
