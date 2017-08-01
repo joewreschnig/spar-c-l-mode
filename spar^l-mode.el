@@ -1,4 +1,4 @@
-;;; spar^l-mode.el --- . ☆ · ﹡ ⸼ ✶ ⁀‿⁐⁓✨ -*- lexical-binding: t -*-
+;;; spar^l-mode.el --- . ☆ · ﹡ ⸼ ✧ ⁀‿⁐⁓✨ -*- lexical-binding: t -*-
 ;;
 ;; Author: Joe Wreschnig
 ;; Package-Version: 20170610
@@ -46,7 +46,7 @@
 (defconst spar^l-mode-tail-compat "  ~ *"
   "Strings to conclude sparkling with restricted glyphs.")
 
-(defconst spar^l-mode-body "⸰ . ☆ · ﹡ ⸼ ✶ ⁕ ° "
+(defconst spar^l-mode-body "⸰ . ☆ · ﹡ ⸼ ✧ ⁕ ° "
   "String to use for sparkling.")
 
 (defconst spar^l-mode-body-compat ". · ° * . ° * · "

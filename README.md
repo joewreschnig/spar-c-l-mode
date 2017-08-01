@@ -7,7 +7,7 @@ isn't?  Then Spar^L mode is for you!
 Spar^L mode replaces the form feed (Control-L, or ^L) character in
 Emacs buffers with something much cuter.
 
-⸰ . ☆ · ﹡ ⸼ ✶ ⁕ ° ⸰ . ☆ · ﹡ ⸼ ✶ ⁕ ° ⸰ . ☆ · ﹡ ⸼ ✶ ⁕ ° ⸰ . ☆ · ﹡ ⸼ ✶ ⁀‿⁐⁓✨
+⸰ . ☆ · ﹡ ⸼ ✧ ⁕ ° ⸰ . ☆ · ﹡ ⸼ ✧ ⁕ ° ⸰ . ☆ · ﹡ ⸼ ✧ ⁕ ° ⸰ . ☆ · ﹡ ⸼ ✧ ⁀‿⁐⁓✨
 
 To use it, add the following to your Emacs initialization after
 installing the package:
