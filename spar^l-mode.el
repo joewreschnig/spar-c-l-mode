@@ -1,4 +1,4 @@
-;;; spar^l-mode.el --- . ☆ · ﾟ ✧ ｡ ⸼ ⸰ ° · ✧ ︵‿✧   -*- lexical-binding: t -*-
+;;; spar^l-mode.el --- . ☆ · ﹡ ⸼ ✶ ⁀‿⁐⁓✨ -*- lexical-binding: t -*-
 ;;
 ;; Author: Joe Wreschnig
 ;; Package-Version: 20170610
@@ -33,7 +33,8 @@
 ;;
 ;; To use it, add the following to your Emacs initialization:
 ;;
-;;     (spar^l-mode t)
+;;     (require ’spar^l-mode)
+;;     (spar^l-mode)
 
 ;;; Code:
 
