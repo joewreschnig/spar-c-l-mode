@@ -113,19 +113,31 @@ the width of a string for a window.")
 
 ;;;###autoload
 (define-minor-mode spar^l-mode
-  "Display Control-L (`^L') characters as sparkles."
+  "Toggle display of Control-L (`^L') characters as sparkles.
+With a prefix argument ARG, enable Spar^L mode if ARG is
+positive, and disable it otherwise.  If called from Lisp, enable
+the mode if ARG is omitted or nil.
+
+You can customize this minor mode, see option `spar^l-mode'."
   :global t :group 'Spar^L
-  (if spar^l-mode
-      (add-hook 'window-size-change-functions #'spar^l-mode-refresh)
-    (remove-hook 'window-size-change-functions #'spar^l-mode-refresh))
+  (remove-hook 'window-size-change-functions #'spar^l-mode-refresh)
+  (remove-hook 'after-setting-font-hook #'spar^l-mode-refresh)
+  (when spar^l-mode
+    (add-hook 'window-size-change-functions #'spar^l-mode-refresh)
+    (add-hook 'after-setting-font-hook #'spar^l-mode-refresh))
   (spar^l-mode-refresh))
 
 (defun spar^l-mode-refresh (&optional frame)
-  "Refresh sparkles, either all or those in FRAME."
+  "Refresh the sparkles in FRAME.
+
+Calling this manually (or toggling the mode) may be necessary
+to correctly draw sparkles after changing font sizes."
+  (interactive)
   (walk-windows
    (lambda (window)
      (let ((display-table (window-display-table window)))
-       (when (or display-table spar^l-mode)
+       (when (and (or display-table spar^l-mode)
+                  (not (window-minibuffer-p window)))
          (unless display-table
            (setq display-table (make-display-table)))
          (aset display-table ?\C-l
