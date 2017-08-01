@@ -78,15 +78,15 @@ default fonts don't have the required glyphs.")
 This is used to prevent infinite loops when creating a new window to test
 the width of a string for a window.")
 
-(defun spar^l-mode--pixel-width (string face frame)
-  "Calculate the width of a STRING with a given FACE in a given FRAME."
+(defun spar^l-mode--pixel-width (string frame)
+  "Calculate the width of a STRING in a given FRAME."
   (with-selected-frame frame
     (with-temp-buffer
-      (insert (propertize string 'face face))
+      (insert (propertize string 'face 'spar^l-mode))
       (save-window-excursion
         (set-window-dedicated-p nil nil)
         (set-window-buffer nil (current-buffer))
-        (car (window-text-pixel-size nil (line-beginning-position) (point)))))))
+        (car (window-text-pixel-size))))))
 
 (defun spar^l-mode--string-for-window (window)
   "Create a sparkle to fit within WINDOW."
@@ -99,13 +99,13 @@ the width of a string for a window.")
 
     (let* ((spar^l-mode--inhibit-refresh t)
            (frame (window-frame window))
-           (width (- (window-body-width window t)
-                     (spar^l-mode--pixel-width
-                      spar^l-mode-tail 'spar^l-mode frame)))
-          (s ""))
-      (while (< (spar^l-mode--pixel-width s 'spar^l-mode frame) width)
+           (body-width (spar^l-mode--pixel-width spar^l-mode-body frame))
+           (tail-width (spar^l-mode--pixel-width spar^l-mode-tail frame))
+           (avail-width (- (window-body-width window t) tail-width))
+           (s ""))
+      (dotimes (_ (ceiling (/ (float avail-width) body-width)))
         (setq s (concat s spar^l-mode-body)))
-      (while (>= (spar^l-mode--pixel-width s 'spar^l-mode frame) width)
+      (while (>= (spar^l-mode--pixel-width s frame) avail-width)
         ;; This could be searched more efficiently, but I'm not sure
         ;; `s' is ever over-long enough to justify the overhead.
         (setq s (substring s 0 -1)))
