@@ -40,32 +40,38 @@
 
 (require 'subr-x)
 
-(defconst spar^l-mode-tail "⁀‿⁐⁓✨"
-  "String to conclude sparkling.")
-
-(defconst spar^l-mode-tail-compat "  ~ *"
-  "Strings to conclude sparkling with restricted glyphs.")
-
-(defconst spar^l-mode-body "⸰ . ☆ · ﹡ ⸼ ✧ ⁕ ° "
-  "String to use for sparkling.")
-
-(defconst spar^l-mode-body-compat ". · ° * . ° * · "
-  "Strings to use for sparkling with restricted glyphs.")
+(defgroup Spar^L nil
+  "Sparkle instead of displaying Control-L (`^L') characters."
+  :prefix "spar^L-" :group 'convenience)
 
 (defface spar^l-mode '((t :inherit (escape-glyph)))
   "The face to use for sparkling."
   :group 'Spar^L)
 
-(defgroup Spar^L nil
-  "Sparkle instead of displaying Control-L (`^L') characters."
-  :prefix "spar^L-" :group 'convenience)
+(defcustom spar^l-mode-tail "⁀‿⁐⁓✨"
+  "String to conclude sparkling."
+  :type 'string)
+
+(defcustom spar^l-mode-body "⸰ . ☆ · ﹡ ⸼ ✧ ⁕ ° "
+  "String to use for sparkling."
+  :type 'string)
 
 (defcustom spar^l-mode-compatibility-mode nil
   "Restrict sparkles to common glyphs for compatibility.
 
 This is always enabled in text-only terminals.  Setting this also
 enables it for graphical displays, which may be needed if your
-default fonts don't have the required glyphs.")
+default fonts don't have the required glyphs or you encounter
+performance problems with Emacs's font rendering."
+  :type 'boolean)
+
+(defcustom spar^l-mode-tail-compat "  ~ *"
+  "String to conclude sparkling with restricted glyphs."
+  :type 'string)
+
+(defcustom spar^l-mode-body-compat ". · ° * . ° * · "
+  "String to use for sparkling with restricted glyphs."
+  :type 'string)
 
 (defun spar^l-mode--compat-p ()
   "Return non-nil if the selected frame should restrict sparkle glyphs."
