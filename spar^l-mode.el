@@ -120,8 +120,8 @@ the width of a string for a window.")
     (remove-hook 'window-size-change-functions #'spar^l-mode-refresh))
   (spar^l-mode-refresh))
 
-(defun spar^l-mode-refresh (&optional _)
-  "Refresh sparkles in active windows."
+(defun spar^l-mode-refresh (&optional frame)
+  "Refresh sparkles, either all or those in FRAME."
   (walk-windows
    (lambda (window)
      (let ((display-table (window-display-table window)))
@@ -136,7 +136,7 @@ the width of a string for a window.")
                               "\n%s\n"
                               (spar^l-mode--string-for-window window))))))
          (set-window-display-table window display-table))))
-     'skip-minibuffer 'visible))
+     'skip-minibuffer (or frame 0)))
 
 (provide 'spar^l-mode)
 
