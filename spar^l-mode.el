@@ -180,11 +180,13 @@ the width of a string for a window.")
           (setq s (substring s 0 -1)))
         (concat s spar^l-mode-tail)))))
 
-(defconst spar^l-mode--keyword
-  `((,page-delimiter (0 '(face spar^l-mode
-                               display "\uE0C0"
-                               yank-handler (nil "\f")))))
-  "Keyword to match the page break.")
+(defun spar^l-mode--keyword ()
+  "Generate a font-lock keyword for page breaks."
+  `((,page-delimiter
+     (0 `(face spar^l-mode
+               display "\uE0C0"
+               yank-handler (nil ,(substring-no-properties
+                                   (match-string 0))))))))
 
 (defun spar^l-mode-refresh-window (&optional window)
   "Refresh the sparkles in WINDOW."
@@ -223,9 +225,9 @@ the width of a string for a window.")
     (with-current-buffer buffer
       (if spar^l-mode
           (progn
-            (font-lock-add-keywords nil spar^l-mode--keyword 'append)
+            (font-lock-add-keywords nil (spar^l-mode--keyword) 'append)
             (font-lock-flush))
-        (font-lock-remove-keywords nil spar^l-mode--keyword)
+        (font-lock-remove-keywords nil (spar^l-mode--keyword))
         (save-mark-and-excursion
          (goto-char 0)
          (with-silent-modifications
