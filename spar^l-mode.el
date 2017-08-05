@@ -224,9 +224,7 @@ the width of a string for a window.")
   (unless (spar^l-mode--excluded buffer)
     (with-current-buffer buffer
       (if spar^l-mode
-          (progn
-            (font-lock-add-keywords nil (spar^l-mode--keyword) 'append)
-            (font-lock-flush))
+          (font-lock-add-keywords nil (spar^l-mode--keyword) 'append)
         (font-lock-remove-keywords nil (spar^l-mode--keyword))
         (save-mark-and-excursion
          (goto-char 0)
@@ -234,9 +232,8 @@ the width of a string for a window.")
            (while (re-search-forward page-delimiter nil t)
              (remove-list-of-text-properties
               (match-beginning 0) (match-end 0)
-              '(display face yank-handler))
-             (font-lock-flush
-              (match-beginning 0) (match-end 0)))))))))
+              '(display face yank-handler))))))
+      (font-lock-flush))))
 
 (provide 'spar^l-mode)
 
