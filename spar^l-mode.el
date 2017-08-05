@@ -38,10 +38,10 @@
 ;;     (require ’spar^l-mode)
 ;;     (spar^l-mode)
 
-;;; Code:
-
 
 
+;;; Code:
+;;
 ;; There are three ways I've seen other Emacs Lisp programs implement
 ;; "fancy ^L":
 ;;
