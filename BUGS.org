@@ -1,16 +1,4 @@
 * Open Issues
-** TODO Scrolling small amounts gets “stuck” on ^Ls.
-   Scrolling with the mouse wheel with only three lines per event gets
-   stuck, especially near the bottom of the file. This seems to be
-   because the scrolling jumps up three visual lines, but only one
-   logical line, then back down one logical line during recentering
-   during redisplay.
-
-   Overlays and text ~’display~ properties don’t have this problem,
-   but they can’t be set per-window.
-
-   It may be necessary to mix the two, with a property to wrap the
-   page feed in newlines and a display table entry to render it.
 
 
 * Resolved Issues
@@ -24,3 +12,17 @@
    in Emacs. It should be fixed in many cases after changing some
    glyphs in the default set, and further workaround steps were added
    to the documentation.
+
+   The width is also cached on the window so resizing it vertically
+   doesn’t require recalculating the string.
+
+** DONE Scrolling small amounts gets “stuck” on ^Ls.
+   Scrolling with the mouse wheel with only three lines per event gets
+   stuck, especially near the bottom of the file. This seems to be
+   because the scrolling jumps up three visual lines, but only one
+   logical line, then back down one logical line during recentering
+   during redisplay.
+
+   Removing the newlines (as many ^L uses within Emacs already wrap it
+   now) fixes the problem, but they could also be re-added in the text
+   ~’display~ property now used for other reasons.
