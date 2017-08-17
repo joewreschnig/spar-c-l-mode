@@ -127,11 +127,12 @@ performance problems with Emacs's font rendering."
   :type 'string)
 
 (defcustom spar^l-mode-exclude-major-modes
-  '("^magit-.*")
+  '("^magit-.*" "^flycheck-.*")
   "Disable sparkling major modes matching these patterns.
 
 This is necessary for modes that also have unusual fontification
-behaviors (e.g. Magit), or where you want to see literal `^L'."
+behaviors (e.g. Flycheck and Magit), or where you want to see
+literal `^L' (e.g. Magit diffs)."
   :type '(repeat regexp))
 
 
