@@ -82,6 +82,7 @@ the mode if ARG is omitted or nil.
 
 You can customize this minor mode, see option `spar^l-mode'."
   :global t :group 'Spar^L
+  :require 'spar^l-mode
   (remove-hook 'after-change-major-mode-hook #'spar^l-mode--handle-buffer)
   (remove-hook 'window-size-change-functions #'spar^l-mode-refresh-frame)
   (remove-hook 'after-setting-font-hook #'spar^l-mode-refresh-frame)
