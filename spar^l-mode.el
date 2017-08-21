@@ -127,12 +127,13 @@ performance problems with Emacs's font rendering."
   :type 'string)
 
 (defcustom spar^l-mode-exclude-major-modes
-  '("^magit-.*" "^flycheck-.*")
+  '()
   "Disable sparkling major modes matching these patterns.
 
 This is necessary for modes that also have unusual fontification
-behaviors (e.g. Flycheck and Magit), or where you want to see
-literal `^L' (e.g. Magit diffs)."
+behaviors or where you want to see literal `^L'.
+
+Sparkling is always disabled in modes without fontification."
   :type '(repeat regexp))
 
 
@@ -216,9 +217,11 @@ the width of a string for a window.")
 
 (defun spar^l-mode--excluded (buffer)
   "Return non-nil if sparkling should be ignored in BUFFER."
-  (let ((mode-name (symbol-name (buffer-local-value 'major-mode buffer))))
-    (seq-some (lambda (re) (string-match-p re mode-name))
-              spar^l-mode-exclude-major-modes)))
+  (or (not (font-lock-specified-p t))
+      (let ((mode-name
+             (symbol-name (buffer-local-value 'major-mode buffer))))
+        (seq-some (lambda (re) (string-match-p re mode-name))
+                  spar^l-mode-exclude-major-modes))))
 
 (defun spar^l-mode--handle-buffer (&optional buffer)
   "Fontify BUFFER to match the sparkle settings."
