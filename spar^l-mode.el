@@ -65,7 +65,7 @@
 ;;    which are basically the same as fontification in terms of
 ;;    features.  You're less likely to mess up another mode's
 ;;    fontification, but more likely to run into bad performance.
-;;    multi-line overlays have bad interactions with cursor motion.
+;;    Multi-line overlays have bad interactions with cursor motion.
 ;;
 ;; Since each of these alone has significant downsides, this package
 ;; uses a hybrid approach.  It uses font-lock tied to a minor mode to
